@@ -103,13 +103,13 @@ class TestTokenize(unittest.TestCase):
 
     @unittest.skipIf(not over_course_string, "Test skipped because it's an överkurs exercise")
     def test_string(self):
-        code = "hello"
+        code = '"hello"'
         expected_tokens = [Token(TokenType.STRING, 'hello')]
         self.assertEqual(tokenize(code), expected_tokens)
 
     @unittest.skipIf(not over_course_string, "Test skipped because it's an överkurs exercise")
     def test_string_addition(self):
-        code = "hello + world"
+        code = '"hello" + "world"'
         expected_tokens = [
             Token(TokenType.STRING, 'hello'),
             Token(TokenType.PLUS),
@@ -138,7 +138,8 @@ class TestTokenize(unittest.TestCase):
         expected_tokens = [
             Token(TokenType.INTEGER, '1'),
             Token(TokenType.INCREMENT),
-            Token(TokenType.PLUS)
+            Token(TokenType.PLUS),
+            Token(TokenType.INTEGER, '2')
         ]
         self.assertEqual(tokenize(code), expected_tokens)
 
