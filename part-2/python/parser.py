@@ -76,5 +76,86 @@ class UnaryOperation:
             return False
         return self.operator == other.operator and self.operand == other.operand
 
-def parse(tokens: List[Token]) -> Expression: # type: ignore
-    _ = tokens
+def parse(tokens: List[Token]) -> Expression:
+    index = 0
+
+    def peek() -> Optional[Token]:
+        if index >= len(tokens):
+            return None
+        return tokens[index]
+
+    def consume() -> Optional[Token]:
+        nonlocal index
+        if index >= len(tokens):
+            return None
+        token = tokens[index]
+        index += 1
+        return token
+
+    def parse_primary() -> Primary:
+        token = consume()
+        if not token:
+            raise Exception("Unexpected end of tokens")
+        if token.type in (TokenType.INTEGER, TokenType.FLOAT, TokenType.STRING, TokenType.IDENTIFIER) and token.value:
+            return Primary(token.type, token.value)
+        raise Exception(f"Unexpected token {token}")
+
+    def parse_unary() -> Expression:
+        peeked = peek()
+        if peeked and peeked.type == TokenType.INCREMENT:
+            consume()
+            return UnaryOperation(peeked.type, parse_primary())
+    
+        expression = parse_primary()
+        while True:
+            operator = peek()
+            if operator and operator.type == TokenType.INCREMENT:
+                consume()
+                expression = UnaryOperation(operator.type, expression)
+            else:
+                break
+
+        return expression
+
+    def parse_factor() -> Expression:
+        expression = parse_unary()
+
+        while True:
+            operator = peek()
+            if operator and operator.type in (TokenType.MUL, TokenType.DIV):
+                consume()
+                right = parse_unary()
+                expression = BinaryOperation(operator.type, expression, right)
+            else:
+                break
+
+        return expression
+
+    def parse_term() -> Expression:
+        expression = parse_factor()
+
+        while True:
+            operator = peek()
+            if operator and operator.type in (TokenType.PLUS, TokenType.MINUS):
+                consume()
+                right = parse_factor()
+                expression = BinaryOperation(operator.type, expression, right)
+            else:
+                break
+
+        return expression
+
+    def parse_expression() -> Expression:
+        return parse_term()
+
+    return parse_expression()
+
+if __name__ == '__main__':
+    tokens = [
+        Token(TokenType.INTEGER, '1'),
+        Token(TokenType.PLUS),
+        Token(TokenType.INTEGER, '2'),
+        Token(TokenType.MUL),
+        Token(TokenType.INTEGER, '3')
+    ]
+    print(parse(tokens))
