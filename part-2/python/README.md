@@ -1,16 +1,16 @@
-# Python testing
+# Python
 
 ## Step 1
 A lexer has been implemented for you and resides in `lexer.py`.
-**Start by understanding for it works.**
+**Start by understanding how it works.**
 
 ## Step 2
-During this session, we'll implement a parser. That is, a function that takes a stream of tokens and returns an abstract syntax tree (AST).
+During this session, we'll implement a parser! That is, a function that takes a stream of tokens and returns an abstract syntax tree (AST).
 
 **Please start by inspecting the `parser.py` and `test-parser.py` files in the current directory.**
 
 ## Step 3
-Before you start implementing anything run the lexer, let's start with a sanity check!
+Let's start with a sanity check! Before you start implementing anything run the lexer-tests, 
 **Run the lexer tests using:**
 ```bash
 python -m unittest test-lexer.py
