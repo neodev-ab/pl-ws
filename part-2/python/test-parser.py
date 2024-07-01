@@ -12,7 +12,7 @@ class TestParser(unittest.TestCase):
             parse(ts)
             self.assertTrue(False)
         except:
-            self.assertTrue(True)
+            pass
 
     def test_integer(self):
         ts = [Token(TokenType.INTEGER, '123')]
@@ -23,25 +23,25 @@ class TestParser(unittest.TestCase):
             parse([Token(TokenType.PLUS)])
             self.assertTrue(False)
         except:
-            self.assertTrue(True)
+            pass
 
         try:
             parse([Token(TokenType.MINUS)])
             self.assertTrue(False)
         except:
-            self.assertTrue(True)
+            pass
 
         try:
             parse([Token(TokenType.MUL)])
             self.assertTrue(False)
         except:
-            self.assertTrue(True)
+            pass
 
         try:
             parse([Token(TokenType.DIV)])
             self.assertTrue(False)
         except:
-            self.assertTrue(True)
+            pass
 
     def test_addition_expression(self):
         ts = [
